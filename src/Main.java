@@ -58,7 +58,7 @@ public class Main extends JFrame {
             y[i] = 5* DOT_SIZE + HEADER_HEIGHT + BORDER_THICKNESS;
         }
         placeFood();
-        gameTimer = new Timer(30, e -> gameUpdate());
+        gameTimer = new Timer(100, e -> gameUpdate());
         gameTimer.start();
         secondTimer = new Timer(1000, e -> {
             if (running) {
@@ -69,7 +69,6 @@ public class Main extends JFrame {
         secondTimer.start();
         running = true;
     }
-
 
     private void gameKeybinds() {
         gamePanel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, 0), "moveLeft");
