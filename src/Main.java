@@ -19,16 +19,70 @@ public class Main extends JFrame {
     private Timer gameTimer;
     private Timer secondTimer;
     private int elapsedTime = 0;
-    private final JPanel gamePanel;
+    private JPanel gamePanel;
+    private JPanel homePanel;
+    private CardLayout cardLayout;
+    private JPanel mainPanel;
     private Settings settings = new Settings(Theme.DEFAULT);
+    private Difficulty difficulty = Difficulty.MEDIUM;
 
     public Main() {
         setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        JDialog dropdown = new JDialog();
+        cardLayout = new CardLayout();
+        mainPanel = new JPanel(cardLayout);
 
+        createHomePanel();
+        createGamePanel();
 
+        mainPanel.add(homePanel, "home");
+        mainPanel.add(gamePanel, "game");
+
+        add(mainPanel);
+        pack();
+        setLocationRelativeTo(null);
+
+        cardLayout.show(mainPanel, "home");
+    }
+
+    private void createHomePanel() {
+        homePanel = new JPanel();
+        homePanel.setPreferredSize(new Dimension(WIDTH, TOTAL_HEIGHT));
+        homePanel.setLayout(new GridBagLayout());
+        homePanel.setBackground(settings.getBG());
+
+        Font font = new Font("Arial", Font.BOLD, 20);
+
+        JButton startButton = new JButton("Start Game");
+        startButton.setFont(font);
+        startButton.addActionListener(e -> startGame());
+
+        JButton difficultyButton = new JButton("Select Difficulty");
+        difficultyButton.setFont(font);
+        difficultyButton.addActionListener(e -> selectDifficulty());
+
+        JButton themeButton = new JButton("Change Theme");
+        themeButton.setFont(font);
+        themeButton.addActionListener(e -> changeTheme());
+
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(10, 10, 10, 10);
+
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        homePanel.add(startButton, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        homePanel.add(difficultyButton, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        homePanel.add(themeButton, gbc);
+    }
+
+    private void createGamePanel() {
         gamePanel = new JPanel() {
             @Override
             protected void paintComponent(Graphics g) {
@@ -44,21 +98,84 @@ public class Main extends JFrame {
         gamePanel.setFocusable(true);
         gamePanel.requestFocusInWindow();
 
-        add(gamePanel);
-        pack();
-        setLocationRelativeTo(null);
-
-        runGame();
         gameKeybinds();
     }
 
-    private void runGame() {
+    private void startGame() {
+        cardLayout.show(mainPanel, "game");
+        restartGame();
+    }
+
+    private void selectDifficulty() {
+        String[] options = {"Easy", "Medium", "Hard"};
+        int choice = JOptionPane.showOptionDialog(this, "Select Difficulty", "Difficulty",
+                JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[1]);
+
+        switch (choice) {
+            case 0 -> difficulty = Difficulty.EASY;
+            case 1 -> difficulty = Difficulty.MEDIUM;
+            case 2 -> difficulty = Difficulty.HARD;
+        }
+    }
+
+    private void changeTheme() {
+        String[] options = {"Default", "Dark", "High Contrast"};
+        int choice = JOptionPane.showOptionDialog(this, "Select Theme", "Theme",
+                JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
+
+        switch (choice) {
+            case 0 -> settings = new Settings(Theme.DEFAULT);
+            case 1 -> settings = new Settings(Theme.DARK);
+            case 2 -> settings = new Settings(Theme.HIGH_CONTRAST);
+        }
+        // Update the home panel background to reflect the new theme
+        homePanel.setBackground(settings.getBG());
+    }
+
+    private void stopTimers() {
+        if (gameTimer != null) {
+            gameTimer.stop();
+        }
+        if (secondTimer != null) {
+            secondTimer.stop();
+        }
+    }
+
+    private void resetSnake() {
+        bodyParts = 4; // Reset snake length
+        for (int i = 0; i < bodyParts; i++) {
+            x[i] = (WIDTH / 2) - i * DOT_SIZE; // Start in the middle horizontally
+            y[i] = (HEIGHT_WITHOUT_HEADER / 2) + HEADER_HEIGHT; // Start in the middle vertically
+        }
+    }
+
+    private void resetTimer() {
+        elapsedTime = 0;
+    }
+
+    public void restartGame() {
+        stopTimers();
+        bodyParts = 4;
+        fruitsEaten = 0;
+        direction = 'R';
+        elapsedTime = 0; // Reset the elapsed time
         for (int i = 0; i < bodyParts; i++) {
             x[i] = 5 * DOT_SIZE - i * DOT_SIZE + BORDER_THICKNESS;
-            y[i] = 5* DOT_SIZE + HEADER_HEIGHT + BORDER_THICKNESS;
+            y[i] = 5 * DOT_SIZE + HEADER_HEIGHT + BORDER_THICKNESS;
         }
         placeFood();
-        gameTimer = new Timer(100, e -> gameUpdate());
+        startTimers();
+        running = true;
+        gamePanel.repaint();
+    }
+
+    private void startTimers() {
+        int gameSpeed = switch (difficulty) {
+            case EASY -> 200;
+            case MEDIUM -> 100;
+            case HARD -> 50;
+        };
+        gameTimer = new Timer(gameSpeed, e -> gameUpdate());
         gameTimer.start();
         secondTimer = new Timer(1000, e -> {
             if (running) {
@@ -67,7 +184,6 @@ public class Main extends JFrame {
             }
         });
         secondTimer.start();
-        running = true;
     }
 
     private void gameKeybinds() {
@@ -112,13 +228,11 @@ public class Main extends JFrame {
         gamePanel.getActionMap().put("restartGame", new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (!running) restartGame();
+                if (!running) {
+                    cardLayout.show(mainPanel, "home");
+                }
             }
         });
-    }
-
-    public char getDirection() {
-        return direction;
     }
 
     public void setDirection(char newDirection) {
@@ -147,7 +261,6 @@ public class Main extends JFrame {
         gamePanel.repaint();
     }
 
-
     private void move() {
         for (int i = bodyParts; i > 0; i--) {
             x[i] = x[i - 1];
@@ -155,10 +268,18 @@ public class Main extends JFrame {
         }
 
         switch (direction) {
-            case 'U': y[0] -= DOT_SIZE; break;
-            case 'D': y[0] += DOT_SIZE; break;
-            case 'L': x[0] -= DOT_SIZE; break;
-            case 'R': x[0] += DOT_SIZE; break;
+            case 'U':
+                y[0] -= DOT_SIZE;
+                break;
+            case 'D':
+                y[0] += DOT_SIZE;
+                break;
+            case 'L':
+                x[0] -= DOT_SIZE;
+                break;
+            case 'R':
+                x[0] += DOT_SIZE;
+                break;
         }
     }
 
@@ -183,24 +304,18 @@ public class Main extends JFrame {
         }
         if (!running) {
             gameTimer.stop();
+            secondTimer.stop();
+            showGameOver();
         }
-    }
-    public boolean isRunning() {
-        return running;
     }
 
-    public void restartGame() {
-        bodyParts = 6;
-        fruitsEaten = 0;
-        direction = 'R';
-        elapsedTime = 0; // Reset the elapsed time
-        for (int i = 0; i < bodyParts; i++) {
-            x[i] = 5 * DOT_SIZE - i * DOT_SIZE;
-            y[i] = 5 * DOT_SIZE;
-        }
-        placeFood();
-        gameTimer.start();
-        running = true;
+    private void showGameOver() {
+        JOptionPane.showMessageDialog(this, "Game Over\nScore: " + fruitsEaten, "Game Over", JOptionPane.INFORMATION_MESSAGE);
+        cardLayout.show(mainPanel, "home");
+    }
+
+    public boolean isRunning() {
+        return running;
     }
 
     private void doDrawing(Graphics g) {
@@ -228,18 +343,21 @@ public class Main extends JFrame {
             gameOver(g);
         }
     }
+
     private void showTime(Graphics g) {
         if (running) {
-            g.setColor(Color.BLACK);
+            g.setColor(settings.getScoreColor());
             g.drawString("Time: " + elapsedTime + "s", 10, 20);
         }
     }
+
     private void showScore(Graphics g) {
         if (running) {
             g.setColor(settings.getScoreColor());
             g.drawString("Score: " + fruitsEaten, WIDTH - 120, 20);
         }
     }
+
     private void gameOver(Graphics g) {
         g.setColor(settings.getGameOverColor());
         g.drawString("Game Over", WIDTH / 2 - 50, HEIGHT_WITHOUT_HEADER / 2);

@@ -1,4 +1,4 @@
-import java.awt.Graphics;
+import java.awt.*;
 
 public class Food {
     private int foodX;
@@ -6,17 +6,11 @@ public class Food {
     private final int dotSize;
     private Settings colorTheme;
 
-
     public Food(int x, int y, int dotSize, Settings colorTheme) {
-//        this.dotSize = dotSize;
-//        this.width = width;
-//        this.height = height;
-//        this.borderThickness = borderThickness;
         foodX = x;
         foodY = y;
-        this.colorTheme = colorTheme;
         this.dotSize = dotSize;
-//        placeFood();
+        this.colorTheme = colorTheme;
     }
 
     public int getFoodX() {
@@ -27,13 +21,13 @@ public class Food {
         return foodY;
     }
 
-//    public void placeFood() {
-//        int r = (int) (Math.random() * ((width - 2 * borderThickness) / dotSize));
-//        foodX = r * dotSize + borderThickness;
-//
-//        int yR = (int) (Math.random() * ((height - 2 * borderThickness) / dotSize));
-//        foodY = yR * dotSize + borderThickness;
-//    }
+    public void placeFood(int width, int height, int borderThickness) {
+        int r = (int) (Math.random() * ((width - 2 * borderThickness) / dotSize));
+        foodX = r * dotSize + borderThickness;
+
+        int yR = (int) (Math.random() * ((height - 2 * borderThickness) / dotSize));
+        foodY = yR * dotSize + borderThickness;
+    }
 
     public void draw(Graphics g) {
         g.setColor(colorTheme.getFoodColor());
