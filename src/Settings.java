@@ -14,22 +14,31 @@ public class Settings {
                 SCORE_COLOR = Color.BLACK;
                 GAME_OVER_COLOR = Color.BLACK;
                 break;
-            case DARK:
+            case MONOCHROME:
                 BG = Color.DARK_GRAY;
                 WALL_COLOR = Color.BLACK;
-                SNAKE_ACCENT_COLOR = new Color(119, 166, 191);
-                SNAKE_SECONDARY_COLOR = new Color(90, 121, 138);
-                FOOD_COLOR = new Color(237, 174, 85);
+                SNAKE_ACCENT_COLOR = new Color(130, 130, 130);
+                SNAKE_SECONDARY_COLOR = new Color(99, 99, 99);
+                FOOD_COLOR = new Color(232, 232, 232);
                 SCORE_COLOR = Color.WHITE;
                 GAME_OVER_COLOR = Color.RED;
                 break;
-            case HIGH_CONTRAST:
-                BG = Color.WHITE;
-                WALL_COLOR = Color.BLACK;
-                SNAKE_ACCENT_COLOR = Color.ORANGE;
-                SNAKE_SECONDARY_COLOR = Color.RED;
-                FOOD_COLOR = Color.GREEN;
-                SCORE_COLOR = Color.YELLOW;
+            case OCEAN:
+                BG = new Color(0, 53, 84);
+                WALL_COLOR = new Color(5, 25, 35);
+                SNAKE_ACCENT_COLOR =  new Color(0, 100, 148);
+                SNAKE_SECONDARY_COLOR = new Color(5, 130, 202);
+                FOOD_COLOR =  new Color(249, 82, 46);
+                SCORE_COLOR = Color.WHITE;
+                GAME_OVER_COLOR = Color.RED;
+                break;
+            case VOID:
+                BG = Color.BLACK;
+                WALL_COLOR = Color.WHITE;
+                SNAKE_ACCENT_COLOR =  new Color(235, 110, 238);
+                SNAKE_SECONDARY_COLOR = new Color(181, 78, 184);
+                FOOD_COLOR =  new Color(124, 198, 197);
+                SCORE_COLOR = Color.WHITE;
                 GAME_OVER_COLOR = Color.RED;
                 break;
         }

@@ -1,6 +1,5 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
 
 public class Main extends JFrame {
     private final int WIDTH = 500, HEIGHT_WITHOUT_HEADER = 500;
@@ -47,12 +46,13 @@ public class Main extends JFrame {
     }
 
     private void createHomePanel() {
+        //Home Screen
         homePanel = new JPanel();
         homePanel.setPreferredSize(new Dimension(WIDTH, TOTAL_HEIGHT));
         homePanel.setLayout(new GridBagLayout());
         homePanel.setBackground(settings.getBG());
 
-        Font font = new Font("Arial", Font.BOLD, 20);
+        Font font = new Font("Arial", Font.BOLD, 16);
 
         JButton startButton = new JButton("Start Game");
         startButton.setFont(font);
@@ -83,6 +83,7 @@ public class Main extends JFrame {
     }
 
     private void createGamePanel() {
+        //Game Screen
         gamePanel = new JPanel() {
             @Override
             protected void paintComponent(Graphics g) {
@@ -98,7 +99,7 @@ public class Main extends JFrame {
         gamePanel.setFocusable(true);
         gamePanel.requestFocusInWindow();
 
-        gameKeybinds();
+        GameMovement.keyBinds(gamePanel, this);
     }
 
     private void startGame() {
@@ -107,6 +108,7 @@ public class Main extends JFrame {
     }
 
     private void selectDifficulty() {
+        //Default is medium
         String[] options = {"Easy", "Medium", "Hard"};
         int choice = JOptionPane.showOptionDialog(this, "Select Difficulty", "Difficulty",
                 JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[1]);
@@ -119,16 +121,17 @@ public class Main extends JFrame {
     }
 
     private void changeTheme() {
-        String[] options = {"Default", "Dark", "High Contrast"};
+        //Default is light mode
+        String[] options = {"Default", "Monochrome", "Ocean", "Void"};
         int choice = JOptionPane.showOptionDialog(this, "Select Theme", "Theme",
                 JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
 
         switch (choice) {
             case 0 -> settings = new Settings(Theme.DEFAULT);
-            case 1 -> settings = new Settings(Theme.DARK);
-            case 2 -> settings = new Settings(Theme.HIGH_CONTRAST);
+            case 1 -> settings = new Settings(Theme.MONOCHROME);
+            case 2 -> settings = new Settings(Theme.OCEAN);
+            case 3 -> settings = new Settings(Theme.VOID);
         }
-        // Update the home panel background to reflect the new theme
         homePanel.setBackground(settings.getBG());
     }
 
@@ -141,24 +144,12 @@ public class Main extends JFrame {
         }
     }
 
-    private void resetSnake() {
-        bodyParts = 4; // Reset snake length
-        for (int i = 0; i < bodyParts; i++) {
-            x[i] = (WIDTH / 2) - i * DOT_SIZE; // Start in the middle horizontally
-            y[i] = (HEIGHT_WITHOUT_HEADER / 2) + HEADER_HEIGHT; // Start in the middle vertically
-        }
-    }
-
-    private void resetTimer() {
-        elapsedTime = 0;
-    }
-
     public void restartGame() {
         stopTimers();
         bodyParts = 4;
         fruitsEaten = 0;
         direction = 'R';
-        elapsedTime = 0; // Reset the elapsed time
+        elapsedTime = 0;
         for (int i = 0; i < bodyParts; i++) {
             x[i] = 5 * DOT_SIZE - i * DOT_SIZE + BORDER_THICKNESS;
             y[i] = 5 * DOT_SIZE + HEADER_HEIGHT + BORDER_THICKNESS;
@@ -171,9 +162,9 @@ public class Main extends JFrame {
 
     private void startTimers() {
         int gameSpeed = switch (difficulty) {
-            case EASY -> 200;
-            case MEDIUM -> 100;
-            case HARD -> 50;
+            case EASY -> 120;
+            case MEDIUM -> 90;
+            case HARD -> 60;
         };
         gameTimer = new Timer(gameSpeed, e -> gameUpdate());
         gameTimer.start();
@@ -186,54 +177,6 @@ public class Main extends JFrame {
         secondTimer.start();
     }
 
-    private void gameKeybinds() {
-        gamePanel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, 0), "moveLeft");
-        gamePanel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_A, 0), "moveLeft");
-        gamePanel.getActionMap().put("moveLeft", new AbstractAction() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                setDirection('L');
-            }
-        });
-
-        gamePanel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, 0), "moveRight");
-        gamePanel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_D, 0), "moveRight");
-        gamePanel.getActionMap().put("moveRight", new AbstractAction() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                setDirection('R');
-            }
-        });
-
-        gamePanel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0), "moveUp");
-        gamePanel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_W, 0), "moveUp");
-        gamePanel.getActionMap().put("moveUp", new AbstractAction() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                setDirection('U');
-            }
-        });
-
-        gamePanel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0), "moveDown");
-        gamePanel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_S, 0), "moveDown");
-        gamePanel.getActionMap().put("moveDown", new AbstractAction() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                setDirection('D');
-            }
-        });
-
-        gamePanel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "restartGame");
-        gamePanel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_SPACE, 0), "restartGame");
-        gamePanel.getActionMap().put("restartGame", new AbstractAction() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (!running) {
-                    cardLayout.show(mainPanel, "home");
-                }
-            }
-        });
-    }
 
     public void setDirection(char newDirection) {
         if ((direction == 'R' && newDirection != 'L') ||
@@ -287,6 +230,7 @@ public class Main extends JFrame {
         if ((x[0] == foodX) && (y[0] == foodY)) {
             bodyParts++;
             fruitsEaten++;
+            Sound.playSound("/eat.wav");
             placeFood();
         }
     }
@@ -305,6 +249,7 @@ public class Main extends JFrame {
         if (!running) {
             gameTimer.stop();
             secondTimer.stop();
+            Sound.playSound("/die.wav");
             showGameOver();
         }
     }

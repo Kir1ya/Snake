@@ -1,3 +1,3 @@
 public enum Theme {
-    DEFAULT, DARK, HIGH_CONTRAST
+    DEFAULT, MONOCHROME, OCEAN, VOID
 }

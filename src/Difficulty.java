@@ -9,7 +9,4 @@ public enum Difficulty {
         this.displayName = displayName;
     }
 
-    public String getDisplayName() {
-        return displayName;
-    }
 }
