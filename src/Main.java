@@ -13,6 +13,7 @@ public class Main extends JFrame {
     private int foodX;
     private int foodY;
     private int fruitsEaten = 0;
+    private int highScore = 0;
     private char direction = 'R';
     private boolean running = false;
     private Timer gameTimer;
@@ -24,6 +25,7 @@ public class Main extends JFrame {
     private JPanel mainPanel;
     private Settings settings = new Settings(Theme.DEFAULT);
     private Difficulty difficulty = Difficulty.MEDIUM;
+    private JLabel highScoreLabel;
 
     public Main() {
         setResizable(false);
@@ -46,7 +48,7 @@ public class Main extends JFrame {
     }
 
     private void createHomePanel() {
-        //Home Screen
+        // Home Screen
         homePanel = new JPanel();
         homePanel.setPreferredSize(new Dimension(WIDTH, TOTAL_HEIGHT));
         homePanel.setLayout(new GridBagLayout());
@@ -66,6 +68,10 @@ public class Main extends JFrame {
         themeButton.setFont(font);
         themeButton.addActionListener(e -> changeTheme());
 
+        highScoreLabel = new JLabel("High Score: " + highScore);
+        highScoreLabel.setFont(font);
+        highScoreLabel.setForeground(settings.getScoreColor());
+
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10, 10, 10, 10);
 
@@ -80,10 +86,14 @@ public class Main extends JFrame {
         gbc.gridx = 0;
         gbc.gridy = 2;
         homePanel.add(themeButton, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 3;
+        homePanel.add(highScoreLabel, gbc);
     }
 
     private void createGamePanel() {
-        //Game Screen
+        // Game Screen
         gamePanel = new JPanel() {
             @Override
             protected void paintComponent(Graphics g) {
@@ -95,6 +105,7 @@ public class Main extends JFrame {
                 showTime(g);
             }
         };
+        // Window Size
         gamePanel.setPreferredSize(new Dimension(WIDTH, TOTAL_HEIGHT));
         gamePanel.setFocusable(true);
         gamePanel.requestFocusInWindow();
@@ -108,7 +119,7 @@ public class Main extends JFrame {
     }
 
     private void selectDifficulty() {
-        //Default is medium
+        // Default is medium
         String[] options = {"Easy", "Medium", "Hard"};
         int choice = JOptionPane.showOptionDialog(this, "Select Difficulty", "Difficulty",
                 JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[1]);
@@ -121,7 +132,7 @@ public class Main extends JFrame {
     }
 
     private void changeTheme() {
-        //Default is light mode
+        // Default is light mode
         String[] options = {"Default", "Monochrome", "Ocean", "Void"};
         int choice = JOptionPane.showOptionDialog(this, "Select Theme", "Theme",
                 JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
@@ -133,9 +144,11 @@ public class Main extends JFrame {
             case 3 -> settings = new Settings(Theme.VOID);
         }
         homePanel.setBackground(settings.getBG());
+        highScoreLabel.setForeground(settings.getScoreColor());
     }
 
     private void stopTimers() {
+        // Game Timer reset
         if (gameTimer != null) {
             gameTimer.stop();
         }
@@ -177,7 +190,6 @@ public class Main extends JFrame {
         secondTimer.start();
     }
 
-
     public void setDirection(char newDirection) {
         if ((direction == 'R' && newDirection != 'L') ||
                 (direction == 'L' && newDirection != 'R') ||
@@ -199,7 +211,7 @@ public class Main extends JFrame {
         if (running) {
             move();
             checkFood();
-            checkCollisions();
+            checkHit();
         }
         gamePanel.repaint();
     }
@@ -235,13 +247,14 @@ public class Main extends JFrame {
         }
     }
 
-    private void checkCollisions() {
+    private void checkHit() {
         for (int i = bodyParts; i > 0; i--) {
             if ((i > 4) && (x[0] == x[i]) && (y[0] == y[i])) {
                 running = false;
                 break;
             }
         }
+        // Touch border
         if (y[0] < HEADER_HEIGHT + BORDER_THICKNESS || y[0] >= HEIGHT_WITHOUT_HEADER + HEADER_HEIGHT - BORDER_THICKNESS ||
                 x[0] < BORDER_THICKNESS || x[0] >= WIDTH - BORDER_THICKNESS) {
             running = false;
@@ -255,7 +268,11 @@ public class Main extends JFrame {
     }
 
     private void showGameOver() {
+        if (fruitsEaten > highScore) {
+            highScore = fruitsEaten;
+        }
         JOptionPane.showMessageDialog(this, "Game Over\nScore: " + fruitsEaten, "Game Over", JOptionPane.INFORMATION_MESSAGE);
+        highScoreLabel.setText("High Score: " + highScore);
         cardLayout.show(mainPanel, "home");
     }
 
@@ -267,7 +284,9 @@ public class Main extends JFrame {
         g.setColor(settings.getBG());
         g.fillRect(0, 0, WIDTH, HEIGHT_WITHOUT_HEADER);
         g.setColor(settings.getWallColor());
-        g.fillRect(0, HEADER_HEIGHT, WIDTH, BORDER_THICKNESS);
+        g.fillRect(
+
+                0, HEADER_HEIGHT, WIDTH, BORDER_THICKNESS);
         g.fillRect(0, HEADER_HEIGHT, BORDER_THICKNESS, HEIGHT_WITHOUT_HEADER);
         g.fillRect(WIDTH - BORDER_THICKNESS, HEADER_HEIGHT, BORDER_THICKNESS, HEIGHT_WITHOUT_HEADER);
         g.fillRect(0, TOTAL_HEIGHT - BORDER_THICKNESS, WIDTH, BORDER_THICKNESS);

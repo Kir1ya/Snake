@@ -4,15 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="98fa62a2-adcc-42a2-8972-0bd4ee07916e" name="Changes" comment="help">
-      <change afterPath="$PROJECT_DIR$/src/Sound.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/die.wav" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/eat.wav" afterDir="false" />
+    <list default="true" id="9bfdcf32-6a3c-4f90-ac3e-a3c4eee1696a" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Difficulty.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Difficulty.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Settings.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Settings.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Theme.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Theme.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -22,7 +17,6 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Enum" />
         <option value="Class" />
       </list>
     </option>
@@ -33,87 +27,39 @@
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 5
 }</component>
-  <component name="ProjectId" id="2gktuyB0f2TvEWfX1skx4nqVSSX" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectId" id="2gVazynWlgrZ6UI6ohCc1vYk74f" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "main",
-    "onboarding.tips.debug.path": "/Users/jasonlo/IdeaProjects/Snake/src/Main.java"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.Main.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;onboarding.tips.debug.path&quot;: &quot;C:/Users/jason/IdeaProjects/Snake/src/Main.java&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;project.propVCSSupport.Mappings&quot;
   }
-}]]></component>
-  <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/src" />
-    </key>
+}</component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="jdk-21.0.1-openjdk-21.0.1-f644763e9732-f98dd351" />
+        <option value="jdk-22-openjdk-22-3183f394aec4-bad0321e" />
+      </set>
+    </attachedChunks>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="98fa62a2-adcc-42a2-8972-0bd4ee07916e" name="Changes" comment="" />
-      <created>1716253632181</created>
+      <changelist id="9bfdcf32-6a3c-4f90-ac3e-a3c4eee1696a" name="Changes" comment="" />
+      <created>1715785466504</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1716253632181</updated>
+      <updated>1715785466504</updated>
     </task>
-    <task id="LOCAL-00001" summary="help">
-      <option name="closed" value="true" />
-      <created>1716429367532</created>
-      <option name="number" value="00001" />
-      <option name="presentableId" value="LOCAL-00001" />
-      <option name="project" value="LOCAL" />
-      <updated>1716429367532</updated>
-    </task>
-    <task id="LOCAL-00002" summary="help">
-      <option name="closed" value="true" />
-      <created>1716429396496</created>
-      <option name="number" value="00002" />
-      <option name="presentableId" value="LOCAL-00002" />
-      <option name="project" value="LOCAL" />
-      <updated>1716429396496</updated>
-    </task>
-    <task id="LOCAL-00003" summary="help">
-      <option name="closed" value="true" />
-      <created>1716433453323</created>
-      <option name="number" value="00003" />
-      <option name="presentableId" value="LOCAL-00003" />
-      <option name="project" value="LOCAL" />
-      <updated>1716433453323</updated>
-    </task>
-    <task id="LOCAL-00004" summary="help">
-      <option name="closed" value="true" />
-      <created>1716433470438</created>
-      <option name="number" value="00004" />
-      <option name="presentableId" value="LOCAL-00004" />
-      <option name="project" value="LOCAL" />
-      <updated>1716433470438</updated>
-    </task>
-    <task id="LOCAL-00005" summary="help">
-      <option name="closed" value="true" />
-      <created>1716644206842</created>
-      <option name="number" value="00005" />
-      <option name="presentableId" value="LOCAL-00005" />
-      <option name="project" value="LOCAL" />
-      <updated>1716644206842</updated>
-    </task>
-    <task id="LOCAL-00006" summary="help">
-      <option name="closed" value="true" />
-      <created>1716644214382</created>
-      <option name="number" value="00006" />
-      <option name="presentableId" value="LOCAL-00006" />
-      <option name="project" value="LOCAL" />
-      <updated>1716644214382</updated>
-    </task>
-    <option name="localTasksCounter" value="7" />
     <servers />
-  </component>
-  <component name="VcsManagerConfiguration">
-    <MESSAGE value="help" />
-    <option name="LAST_COMMIT_MESSAGE" value="help" />
   </component>
 </project>
